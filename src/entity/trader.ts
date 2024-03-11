@@ -1,18 +1,15 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Inventory {
+export class Trader {
     @PrimaryGeneratedColumn()
-    inventory_id!: number
+    trader_id!: number
 
     @Column()
     settlementID!: number
 
     @Column()
-    amount!: number
-
-    @Column()
-    capacity_used!: number
+    InventoryID!: number
 
 }
 
