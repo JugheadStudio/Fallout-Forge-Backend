@@ -1,12 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Users } from "./users";
 
 @Entity()
 export class Settlements {
     @PrimaryGeneratedColumn()
     settlement_id!: number
 
-    @Column()
-    userID!: number
+    @OneToMany(() => Users, (users) => users.user_id)
+    userID!: Users
+    // @Column()
+    // userID!: number
 
     @Column()
     name!: string

@@ -1,15 +1,17 @@
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Inventory } from "./inventory";
+import { Constructions } from "./constructions";
 
 @Entity()
 export class Items {
-    @PrimaryGeneratedColumn()
-    item_id!: number
 
-    @OneToMany(() => Inventory, (inventory) => inventory.inventory_id)
-    inventory!: Inventory[]
-    // @Column()
-    // inventoryID!: number
+    //two relations here, HOW????
+    // missing relation to Inventory table
+    @OneToMany(() => Constructions, (constructions) => constructions.items)
+    @PrimaryGeneratedColumn()
+    items_required!: Constructions
+    // @PrimaryGeneratedColumn()
+    // item_id!: number
 
     @Column()
     name!: string

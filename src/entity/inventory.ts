@@ -1,13 +1,18 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Items } from "./items";
+import { Settlements } from "./settlements";
 
 @Entity()
 export class Inventory {
     @PrimaryGeneratedColumn()
     inventory_id!: number
 
-    @Column()
-    settlementID!: number
+    // @OneToOne(() => Settlements, (settlements) => settlements.settlement_id)
+    @OneToOne(() => Settlements)
+    @JoinColumn()
+    settlements!: Settlements
+    // @Column()
+    // settlementID!: number
 
     @Column()
     amount!: number
@@ -15,7 +20,8 @@ export class Inventory {
     @Column()
     capacity_used!: number
 
-    @ManyToOne(() => Items, (items) => items.item_id)
+    @OneToOne(() => Items)
+    @JoinColumn()
     items!: Items
 
 }
