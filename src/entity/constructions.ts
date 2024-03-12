@@ -1,15 +1,15 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Items } from "./items";
 
 @Entity()
 export class Constructions {
     @PrimaryGeneratedColumn()
     constructions_id!: number
 
-    // @OneToMany(() => Items)
-    // @JoinColumn()
-    // items: Items
-    @Column("int", { array: true })
-    items_required!: number[]
+    @OneToMany(() => Items, (items) => items.item_id)
+    items!: Items[]
+    // @Column("int", { array: true })
+    // items_required!: number[]
 
     @Column()
     name!: string

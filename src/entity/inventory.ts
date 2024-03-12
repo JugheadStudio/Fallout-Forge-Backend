@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Items } from "./items";
 
 @Entity()
 export class Inventory {
@@ -14,5 +15,7 @@ export class Inventory {
     @Column()
     capacity_used!: number
 
-}
+    @ManyToOne(() => Items, (items) => items.item_id)
+    items!: Items
 
+}

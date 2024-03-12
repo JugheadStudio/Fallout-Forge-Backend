@@ -7,8 +7,7 @@ export class Items {
     item_id!: number
 
     @OneToMany(() => Inventory, (inventory) => inventory.inventory_id)
-    @JoinColumn()
-    inventoryID: Inventory
+    inventory!: Inventory[]
     // @Column()
     // inventoryID!: number
 
