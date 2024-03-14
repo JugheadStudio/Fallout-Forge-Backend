@@ -1,4 +1,7 @@
 import { DataSource } from "typeorm";
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 const AppDataSource = new DataSource(
     {
@@ -6,7 +9,7 @@ const AppDataSource = new DataSource(
         "host": "localhost",
         "port": 5432,
         "username": "postgres",
-        "password": "1234",
+        "password": process.env.DB_PASSWORD,
         "database": "ff_db",
         "entities": ["src/entity/**"],
         "logging": true,

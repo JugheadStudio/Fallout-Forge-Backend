@@ -1,32 +1,44 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Inventory } from "./inventory";
 import { Constructions } from "./constructions";
+import { Constructed_Constructions } from "./constructed_constructions";
 
 @Entity()
 export class Items {
+  @PrimaryGeneratedColumn()
+  item_id!: number;
 
-    //two relations here, HOW????
-    // missing relation to Inventory table
-    @OneToMany(() => Constructions, (constructions) => constructions.items)
-    @PrimaryGeneratedColumn()
-    items_required!: Constructions
-    // @PrimaryGeneratedColumn()
-    // item_id!: number
+  @Column()
+  constructionID!: number;
 
-    @Column()
-    name!: string
+  @Column()
+  public constructedId!: number;
 
-    @Column()
-    value!: number
+  @Column()
+  public amount!: number;
 
-    @Column()
-    capacity!: number
+//   @Column()
+//   name!: string;
 
-    @Column()
-    image!: string
+//   @Column()
+//   value!: number;
 
-    @Column()
-    category!: string
+//   @Column()
+//   capacity!: number;
 
+//   @Column()
+//   image!: string;
+
+  //   @Column()
+  //   category!: string;
+
+  @ManyToOne(
+    () => Constructed_Constructions,
+    (constructed) => constructed.constructed_ToCraftables
+  )
+  public constructed?: Constructed_Constructions;
+
+  @ManyToOne(() => Constructions, (constructions) => constructions.items)
+  public constructions?: Constructions;
 }
 
