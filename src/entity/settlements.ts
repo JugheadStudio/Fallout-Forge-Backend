@@ -30,4 +30,3 @@ export class Settlements {
     image!: string
 
 }
-
