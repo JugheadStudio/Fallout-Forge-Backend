@@ -57,8 +57,4 @@ inventoryRouter.put("/:inventory_id", async (req, res) => {
     }
 })
 
-
-
-
-
 export default inventoryRouter
