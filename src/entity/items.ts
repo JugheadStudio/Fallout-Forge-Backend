@@ -15,19 +15,19 @@ export class Items {
   public constructedId!: number;
 
   @Column()
-  public amount!: number;
+  public amountNeeded!: number;
 
-//   @Column()
-//   name!: string;
+  //   @Column()
+  //   name!: string;
 
-//   @Column()
-//   value!: number;
+  //   @Column()
+  //   value!: number;
 
-//   @Column()
-//   capacity!: number;
+  //   @Column()
+  //   capacity!: number;
 
-//   @Column()
-//   image!: string;
+  //   @Column()
+  //   image!: string;
 
   //   @Column()
   //   category!: string;

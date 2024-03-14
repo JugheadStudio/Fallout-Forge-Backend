@@ -13,7 +13,7 @@ constructionsRouter.get("/", async (req, res) => {
     const constructionss = await appDataSource
       .getRepository(Constructions)
       .createQueryBuilder("constructions")
-      .leftJoinAndSelect("constructions.items", "item") // add the ingreients table
+      .leftJoinAndSelect("constructions.items", "items") // add the ingreients table
       .leftJoinAndSelect("items.constructed", "constructed") // add the inventory table to ingredients
       .getMany();
 
