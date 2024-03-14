@@ -10,8 +10,8 @@ export class Constructions {
   @Column()
   name!: string;
 
-  // @Column()
-  // amountOwned!: number
+  @Column()
+  amountOwned!: number
 
   @Column()
   image!: string;
