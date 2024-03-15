@@ -8,12 +8,17 @@ ccRouter.use(Express.json());
 
 const appDataSource = AppDataSource;
 
+// GET request to fetch all CC items
 ccRouter.get("/", async (req, res) => {
   try {
     // console.log("called")
     const cc = await appDataSource
       .getRepository(Constructed_Constructions)
-      .find();
+      .find({
+        order: {
+          ccMaterials_id: "ASC", // or "DESC" for descending order
+        },
+      });
 
     res.json(cc);
   } catch (error) {
@@ -22,35 +27,33 @@ ccRouter.get("/", async (req, res) => {
   }
 });
 
-// inventoryRouter.put("/:inventory_id", async (req, res) => {
-//     try {
+// POST request to save CC item
+ccRouter.put("/:ccMaterials_id", async (req, res) => {
+  try {
+    const ccMaterials_id = parseInt(req.params.ccMaterials_id);
 
-//         const inventory_id = parseInt(req.params.inventory_id)
+    const { buy_price, sell_price } = req.body;
 
-//         const { name, description, category, icon, amount } = req.body
+    const ccItem = await appDataSource
+      .getRepository(Constructed_Constructions)
+      .findOneBy({ ccMaterials_id: ccMaterials_id });
 
-//         const inventoryItem = await appDataSource.getRepository(Inventory)
-//             .findOneBy({inventory_id: inventory_id})
+    if (!ccItem) {
+      res.status(404).json({ message: "No item found" });
+    } else {
+      ccItem!.buy_price = buy_price;
+      ccItem!.sell_price = sell_price;
 
-//         if(!inventoryItem) {
-//             res.status(404).json({message: "No item found"})
-//         }
-//         else {
+      const updatedItem = await appDataSource
+        .getRepository(Constructed_Constructions)
+        .save(ccItem!);
 
-//             inventoryItem!.amount = amount
-
-//             const updatedItem = await appDataSource.getRepository(Inventory)
-//                 .save(inventoryItem!)
-
-//             res.json(updatedItem)
-
-//         }
-
-//     }
-//     catch(error) {
-//         console.error("Error updating inventory  items", error);
-//         res.status(500).json({ error: "Internal Server Error"});
-//     }
-// })
+      res.json(updatedItem);
+    }
+  } catch (error) {
+    console.error("Error updating inventory  items", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 export default ccRouter;
