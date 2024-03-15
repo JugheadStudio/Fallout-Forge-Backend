@@ -21,6 +21,5 @@ export class Constructions {
 
   @OneToMany(() => Items, (items) => items.constructions)
   items?: Items[];
-  // @Column("int", { array: true })
-  // items_required!: number[]
+
 }

@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import AppDataSource from './dataSource';
 import inventoryRouter from './routes/inventoryRoute';
 import constructionsRouter from './routes/constructionsRoute';
+import settlementsRouter from './routes/settlementsRoute';
 // import ormconfig from '../ormconfig.json';
 
 const cors = require('cors');
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 
 app.use('/inventory', inventoryRouter);
 app.use('/constructions', constructionsRouter);
+app.use('/settlements', settlementsRouter);
 
 app.listen(process.env.PORT, () => {
     console.log('Server is listening on port 3000');

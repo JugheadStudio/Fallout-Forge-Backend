@@ -17,21 +17,6 @@ export class Items {
   @Column()
   public amountNeeded!: number;
 
-  //   @Column()
-  //   name!: string;
-
-  //   @Column()
-  //   value!: number;
-
-  //   @Column()
-  //   capacity!: number;
-
-  //   @Column()
-  //   image!: string;
-
-  //   @Column()
-  //   category!: string;
-
   @ManyToOne(
     () => Constructed_Constructions,
     (constructed) => constructed.constructed_ToCraftables
@@ -40,5 +25,6 @@ export class Items {
 
   @ManyToOne(() => Constructions, (constructions) => constructions.items)
   public constructions?: Constructions;
+
 }
 

@@ -10,17 +10,12 @@ import {
 import { Items } from "./items";
 import { Constructions } from "./constructions";
 import { Settlements } from "./settlements";
+import { Inventory } from "./inventory";
 
 @Entity()
 export class Constructed_Constructions {
   @PrimaryGeneratedColumn()
-  constructionInventory_id!: number;
-
-  // @OneToOne(() => Settlements)
-  // @JoinColumn()
-  // settlements!: Settlements
-  // @Column()
-  // settlementID!: number
+  ccMaterials_id!: number;
 
   @Column()
   name!: string;
@@ -40,12 +35,9 @@ export class Constructed_Constructions {
   @Column()
   capacity_used!: number;
 
-  // @OneToOne(() => Constructions)
-  // @JoinColumn()
-  // constructions!: Constructions
-  // @Column()
-  // constructionID!: number
-
   @OneToMany(() => Items, (items) => items.constructed)
   public constructed_ToCraftables?: Items[];
+
+  @OneToMany(() => Inventory, (inventory) => inventory.cc)
+  public cc_ToStorage?: Inventory[];
 }

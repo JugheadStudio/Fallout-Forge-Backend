@@ -1,27 +1,32 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { Items } from "./items";
 import { Settlements } from "./settlements";
+import { Constructed_Constructions } from "./constructed_constructions";
 
 @Entity()
 export class Inventory {
-    @PrimaryGeneratedColumn()
-    inventory_id!: number
+  @PrimaryGeneratedColumn()
+  inventory_id!: number;
 
-    // @OneToOne(() => Settlements, (settlements) => settlements.settlement_id)
-    @OneToOne(() => Settlements)
-    @JoinColumn()
-    settlements!: Settlements
-    // @Column()
-    // settlementID!: number
+  @Column()
+  amount!: number;
 
-    @Column()
-    amount!: number
+  @Column()
+  capacity_used!: number;
 
-    @Column()
-    capacity_used!: number
+  @ManyToOne(
+    () => Settlements,
+    (settlements) => settlements.settlements_ToStorage
+  )
+  public settlements?: Settlements;
 
-    @OneToOne(() => Items)
-    @JoinColumn()
-    items!: Items
-
+  @ManyToOne(() => Constructed_Constructions, (cc) => cc.cc_ToStorage)
+  public cc?: Constructed_Constructions;
 }
