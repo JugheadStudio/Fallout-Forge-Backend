@@ -33,6 +33,12 @@ export class Constructed_Constructions {
   amount!: number;
 
   @Column()
+  buy_price!: number;
+
+  @Column()
+  sell_price!: number;
+
+  @Column()
   capacity_used!: number;
 
   @OneToMany(() => Items, (items) => items.constructed)
