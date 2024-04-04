@@ -24,4 +24,8 @@ settlementsRouter.get("/", async (req, res) => {
   }
 });
 
+
+
+
+
 export default settlementsRouter;
