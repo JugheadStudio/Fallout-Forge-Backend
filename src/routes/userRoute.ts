@@ -36,7 +36,7 @@ userRouter.post("/", async (req, res) => {
 userRouter.post('/login', async (req, res) => {
   try {
 
-    const {email, username, password} = req.body;
+    const {email, password} = req.body;
 
     // if (email || username && password)
     if (email && password) {
