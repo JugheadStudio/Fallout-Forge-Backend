@@ -26,5 +26,11 @@ export class Items {
   @ManyToOne(() => Constructions, (constructions) => constructions.items)
   public constructions?: Constructions;
 
+  @ManyToOne(() => Constructed_Constructions)
+  @JoinColumn({ name: "constructedId" }) // specify the column to join on
+  public constructedCorrectly?: Constructed_Constructions;
+
+
+  
 }
 

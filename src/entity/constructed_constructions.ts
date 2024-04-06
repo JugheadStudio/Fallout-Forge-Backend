@@ -17,12 +17,26 @@ export class Constructed_Constructions {
   @PrimaryGeneratedColumn()
   ccMaterials_id!: number;
 
-  // Define the relationship with Settlements
+  // // Define the relationship with Settlements
+  // @ManyToOne(() => Settlements)
+  // settlement!: Settlements;
+
+  // // Define the relationship with Constructions
+  // @ManyToOne(() => Constructions)
+  // construction!: Constructions;
+
   @ManyToOne(() => Settlements)
+  @JoinColumn({
+    name: "settlementSettlementId",
+    referencedColumnName: "settlement_id",
+  })
   settlement!: Settlements;
 
-  // Define the relationship with Constructions
   @ManyToOne(() => Constructions)
+  @JoinColumn({
+    name: "constructionConstructionsId",
+    referencedColumnName: "constructions_id",
+  })
   construction!: Constructions;
 
   @Column()
@@ -54,4 +68,8 @@ export class Constructed_Constructions {
 
   @OneToMany(() => Inventory, (inventory) => inventory.cc)
   public cc_ToStorage?: Inventory[];
+
+  // Establish a direct relationship with Items
+  @OneToMany(() => Items, (item) => item.constructedCorrectly)
+  constructedItems?: Items[];
 }

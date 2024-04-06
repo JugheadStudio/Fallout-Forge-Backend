@@ -15,6 +15,7 @@ settlementsRouter.get("/", async (req, res) => {
       .createQueryBuilder("settlements")
       .leftJoinAndSelect("settlements.settlements_ToStorage", "inventory")
       .leftJoinAndSelect("inventory.cc", "constructed_constructions")
+      .orderBy("settlements.settlement_id", "ASC")
       .getMany();
 
     res.json(settlements);
@@ -23,9 +24,6 @@ settlementsRouter.get("/", async (req, res) => {
     return res.status(500).json({ message: error });
   }
 });
-
-
-
 
 
 export default settlementsRouter;

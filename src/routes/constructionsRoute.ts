@@ -3,6 +3,7 @@ import AppDataSource from "../dataSource";
 import { Constructions } from "../entity/constructions";
 import { Settlements } from "../entity/settlements";
 import { Constructed_Constructions } from "../entity/constructed_constructions";
+import { Items } from "../entity/items";
 
 const constructionsRouter = Express.Router();
 
@@ -84,10 +85,11 @@ constructionsRouter.post("/:settlementId/craft", async (req, res) => {
     // Check if all required items are constructed
     for (const item of construction.items) {
       // Find the constructed item associated with the construction item
-      const constructedItem = await appDataSource
-        .getRepository(Constructed_Constructions)
-        .findOne({ where: { ccMaterials_id: item.constructedId } });
-
+      const constructedItem = await appDataSource.getRepository(Items).findOne({
+        where: { item_id: item.item_id },
+        relations: ["constructedCorrectly"],
+      });
+      
       // Check if the constructed item exists
       if (!constructedItem) {
         return res
@@ -100,13 +102,14 @@ constructionsRouter.post("/:settlementId/craft", async (req, res) => {
       const availableAmount =
         settlement.settlements_ToStorage?.find(
           (storage) =>
-            storage.cc?.ccMaterials_id === constructedItem.ccMaterials_id
+            storage.cc?.ccMaterials_id ===
+            constructedItem.constructedCorrectly?.ccMaterials_id
         )?.amount ?? 0;
 
       if (requiredAmount > availableAmount) {
-        return res
-          .status(400)
-          .json({ message: `Not enough ${constructedItem.name}.` });
+        return res.status(400).json({
+          message: `Not enough ${constructedItem.constructedCorrectly?.name}.`,
+        });
       }
     }
 
