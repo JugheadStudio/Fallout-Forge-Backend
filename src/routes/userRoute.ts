@@ -9,34 +9,41 @@ userRouter.use(express.json())
 
 const appDataSource = AppDataSource
 
-userRouter.post("/", async (req, res) => {
-  
+userRouter.post("/register", async (req, res) => {
   try {
-    const {name, surname, username, email, password, isAdmin} = req.body
+    const { name, surname, username, email, password } = req.body;
 
-    var newUser = new User()
+    // Check if user with the provided email already exists
+    const existingUser = await appDataSource.getRepository(User).findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email address already registered" });
+    }
 
-    newUser.name = name
-    newUser.surname = surname
-    newUser.username = username
-    newUser.email = email
-    newUser.password = password
-    newUser.isAdmin = isAdmin
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    var addedUser = await appDataSource.getRepository(User).save(newUser);
+    // Create a new user instance
+    const newUser = new User();
+    newUser.name = name;
+    newUser.surname = surname;
+    newUser.username = username;
+    newUser.email = email;
+    newUser.password = hashedPassword; // Assign hashed password
 
-    return res.json(addedUser)
+    // Save the new user to the database
+    const addedUser = await appDataSource.getRepository(User).save(newUser);
 
+    return res.status(201).json(addedUser);
   } catch (error) {
-    console.log("Error occured: " + error)
-    return res.status(500).json({message: error})
+    console.log("Error occurred:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 userRouter.post('/login', async (req, res) => {
   try {
 
-    const {email, username, password} = req.body;
+    const {email, password} = req.body;
 
     // if (email || username && password)
     if (email && password) {
