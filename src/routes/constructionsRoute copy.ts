@@ -49,27 +49,17 @@ constructionsRouter.post("/:settlementId/craft", async (req, res) => {
       return res.status(404).json({ message: "Settlement not found." });
     }
 
-    // Find the construction with associated items
     const construction = await appDataSource
       .getRepository(Constructions)
-      .findOne({
-        where: { constructions_id: constructionId },
-        relations: ["items"], // Eagerly load the associated items
-      });
+      .findOneOrFail(constructionId);
 
-    // Check if settlement exists
-    if (!construction) {
-      return res.status(404).json({ message: "construction not found." });
-    }
-
-    // Check if construction cost is defined
     if (!construction.cost) {
       return res
         .status(400)
         .json({ message: "Construction cost is not defined." });
     }
 
-    // Check if settlement has enough bottle caps
+    // Check if settlement has enough bottleCaps
     if (settlement.bottleCaps < construction.cost) {
       return res.status(400).json({ message: "Not enough bottle caps." });
     }
@@ -81,36 +71,28 @@ constructionsRouter.post("/:settlementId/craft", async (req, res) => {
         .json({ message: "Construction items are not defined." });
     }
 
-    // Check if all required items are constructed
+    // Check if settlement has enough materials
     for (const item of construction.items) {
-      // Find the constructed item associated with the construction item
-      const constructedItem = await appDataSource
-        .getRepository(Constructed_Constructions)
-        .findOne({ where: { ccMaterials_id: item.constructedId } });
-
-      // Check if the constructed item exists
-      if (!constructedItem) {
+      if (!item.constructed) {
         return res
           .status(400)
           .json({ message: "Constructed item is not defined." });
       }
-
-      // Check if the required amount of the constructed item is available
       const requiredAmount = item.amountNeeded;
       const availableAmount =
         settlement.settlements_ToStorage?.find(
           (storage) =>
-            storage.cc?.ccMaterials_id === constructedItem.ccMaterials_id
+            storage.cc?.ccMaterials_id === item.constructed?.ccMaterials_id
         )?.amount ?? 0;
 
       if (requiredAmount > availableAmount) {
         return res
           .status(400)
-          .json({ message: `Not enough ${constructedItem.name}.` });
+          .json({ message: `Not enough ${item.constructed.name}.` });
       }
     }
 
-    // Deduct bottle caps and materials
+    // Deduct bottleCaps and materials
     settlement.bottleCaps -= construction.cost;
     for (const item of construction.items) {
       const storage = settlement.settlements_ToStorage?.find(
@@ -122,24 +104,23 @@ constructionsRouter.post("/:settlementId/craft", async (req, res) => {
       }
     }
 
-    // Create and save constructed construction
+    // Increase amountOwned
+    // Assuming you have a relation between Settlements and ConstructedConstructions
     const constructedConstruction = new Constructed_Constructions();
     constructedConstruction.settlement = settlement;
     constructedConstruction.construction = construction;
+    // You may need to populate other fields here
+
     await appDataSource
       .getRepository(Constructed_Constructions)
       .save(constructedConstruction);
 
-    // Save changes to the settlement
+    // Save changes to the database
     await appDataSource.getRepository(Settlements).save(settlement);
 
-    // Send success response
     res.status(200).json({ message: "Construction crafted successfully." });
   } catch (error) {
-    // Log the error for debugging
     console.error("Crafting failed:", error);
-
-    // Send error response
     res
       .status(500)
       .json({ message: "Crafting failed. Please try again later." });

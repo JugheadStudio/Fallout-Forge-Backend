@@ -17,6 +17,14 @@ export class Constructed_Constructions {
   @PrimaryGeneratedColumn()
   ccMaterials_id!: number;
 
+  // Define the relationship with Settlements
+  @ManyToOne(() => Settlements)
+  settlement!: Settlements;
+
+  // Define the relationship with Constructions
+  @ManyToOne(() => Constructions)
+  construction!: Constructions;
+
   @Column()
   name!: string;
 
