@@ -11,7 +11,7 @@ export class Constructions {
   name!: string;
 
   @Column()
-  amountOwned!: number
+  amountOwned!: number;
 
   @Column()
   image!: string;
@@ -22,4 +22,18 @@ export class Constructions {
   @OneToMany(() => Items, (items) => items.constructions)
   items?: Items[];
 
+  @Column({ type: "varchar", nullable: true }) // Specify data type as integer and allow null values
+  yields!: string;
+
+  @Column({ type: "integer", nullable: true }) // Specify data type as integer and allow null values
+  cost?: number;
+
+  @Column({ type: "integer", nullable: true }) // Specify data type as integer and allow null values
+  amountOwnedSettlement1?: number;
+
+  @Column({ type: "integer", nullable: true }) // Specify data type as integer and allow null values
+  amountOwnedSettlement2?: number;
+
+  @Column({ type: "integer", nullable: true }) // Specify data type as integer and allow null values
+  amountOwnedSettlement3?: number;
 }
