@@ -6,6 +6,7 @@ import inventoryRouter from './routes/inventoryRoute';
 import constructionsRouter from './routes/constructionsRoute';
 import settlementsRouter from './routes/settlementsRoute';
 import ccRouter from './routes/constructed_constructionsRoute';
+import userRouter from './routes/userRoute';
 // import ormconfig from '../ormconfig.json';
 
 const cors = require('cors');
@@ -26,6 +27,7 @@ app.use('/inventory', inventoryRouter);
 app.use('/constructions', constructionsRouter);
 app.use('/settlements', settlementsRouter);
 app.use('/admin', ccRouter);
+app.use('/users', userRouter)
 
 app.listen(process.env.PORT, () => {
     console.log('Server is listening on port 3000');

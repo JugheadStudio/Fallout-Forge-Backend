@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Users } from "./users";
+import { User } from "./users";
 import { Inventory } from "./inventory";
 
 @Entity()
@@ -7,8 +7,8 @@ export class Settlements {
   @PrimaryGeneratedColumn()
   settlement_id!: number;
 
-  @OneToMany(() => Users, (users) => users.user_id)
-  userID!: Users;
+  @OneToMany(() => User, (user) => user.user_id)
+  userID!: User;
   // @Column()
   // userID!: number
 
